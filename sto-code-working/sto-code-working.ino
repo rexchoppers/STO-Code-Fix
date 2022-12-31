@@ -81,7 +81,7 @@ void setup()
   tft.fillRect(8, 10, 60, 100, MAGENTA);          // Fan off square
   tft.fillRoundRect(8, 10, 60, 130, 30, MAGENTA); // Fan off round
 
-  tft.fillRect(80, 2a10, 60, 100, CYAN);         // Led on square
+  tft.fillRect(80, 210, 60, 100, CYAN);         // Led on square
   tft.fillRoundRect(80, 180, 60, 130, 30, CYAN); // Led on round
 
   tft.fillRect(80, 10, 60, 100, CYAN);          // Led off square
