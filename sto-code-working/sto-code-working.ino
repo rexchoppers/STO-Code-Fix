@@ -7,14 +7,16 @@ int pos = 0;
 
 #define TS_MINX 920
 #define TS_MINY 120
+
 #define TS_MAXX 150
 #define TS_MAXY 940
+
 #define YP A3  // must be an analog pin, use "An" notation!
 #define XM A2  // must be an analog pin, use "An" notation!
 #define YM 9   // can be a digital pin
 #define XP 8   // can be a digital pin
 
-TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 100);
 
 // macros for color (16 bit)
 #define BLACK 0x0000
@@ -121,7 +123,7 @@ void setup() {
   tft.setTextColor(YELLOW);
   tft.setCursor(40, 80);
   tft.println("LCARS MENU");
-  
+
   /** "SYSTEM" TEXT **/
   tft.setCursor(80, 130);
   tft.println("SYSTEM");
@@ -139,7 +141,7 @@ void setup() {
   tft.setTextColor(BLACK);
   tft.setTextSize(2);
   tft.setCursor(190, 14);
-  tft.println("ONLINE");  
+  tft.println("ONLINE");
 
   /** Draw bar **/
   tft.fillRect(230, 40, 80, 15, YELLOW);
@@ -149,7 +151,7 @@ void setup() {
   tft.setTextColor(BLACK);
   tft.setTextSize(3);
   tft.setCursor(45, 198);
-  tft.println("POWER"); 
+  tft.println("POWER");
 
   /** "OK" TEXT **/
   tft.fillRoundRect(200, 180, 120, 60, 30, GREEN);
@@ -174,7 +176,53 @@ void setup() {
 }
 
 void loop() {
+  TSPoint p = ts.getPoint();
 
+  if (p.z > 10 && p.z < 1000) {
 
-  delay(100);
+    p.x = map(p.x, TS_MINX, TS_MAXX, tft.width(), 0);
+    p.y = map(p.y, TS_MINY, TS_MAXY, tft.height(), 0);
+
+    if (p.x > 240 && p.x < 300)  // Fan
+    {
+      if (p.y > 0 && p.y < 160) {
+        digitalWrite(22, HIGH);
+        delay(1000);
+        digitalWrite(26, HIGH);
+      } else if (p.y > 160 && p.y < 320) {
+        digitalWrite(22, LOW);
+        digitalWrite(26, LOW);
+      }
+    }
+
+    // "LIGHT ON" - Pressed
+    if (p.x > 170 && p.x < 230 && p.y > 0 && p.y < 160) {
+      digitalWrite(30, HIGH);
+    }
+
+    // "LIGHT OFF" - Pressed
+    if (p.x > 170 && p.x < 230 && p.y > 160 && p.y < 320) {
+      digitalWrite(30, LOW);
+    }
+
+    // "VISOR UP" - Pressed
+    if (p.x > 0 && p.x < 140 && p.y > 0 && p.y < 160)  // Servo
+    {
+      for (pos = 0; pos <= 180; pos += 1) {  // goes from 0 degrees to 180 degrees
+                                             // in steps of 1 degree
+        Servo1.write(pos);                   // tell servo to go to position in variable 'pos'
+        delay(5);
+      }
+    }
+
+    // "VISOR DOWN" - Pressed
+    if (p.x > 0 && p.x < 140 && p.y > 160 && p.y < 320) {
+      for (pos = 180; pos >= 0; pos -= 1) {  // goes from 180 degrees to 0 degrees
+        Servo1.write(pos);                   // tell servo to go to position in variable 'pos'
+        delay(5);
+      }
+    }
+  }
+
+  delay(50);
 }
