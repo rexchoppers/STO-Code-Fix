@@ -37,6 +37,72 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 Elegoo_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
+void initSecondScreen() {
+  /** INIT SCREEN **/
+  tft.setRotation(2);
+  tft.fillScreen(BLACK);
+
+  /** FAN ON SECTION **/
+  tft.fillRect(8, 210, 60, 100, MAGENTA);
+  tft.fillRoundRect(8, 180, 60, 130, 30, MAGENTA);
+
+  /** FAN OFF SECTION **/
+  tft.fillRect(8, 10, 60, 100, MAGENTA);
+  tft.fillRoundRect(8, 10, 60, 130, 30, MAGENTA);
+
+  /** LED ON SECTION **/
+  tft.fillRect(80, 210, 60, 100, CYAN);
+  tft.fillRoundRect(80, 180, 60, 130, 30, CYAN);
+
+  /** LED OFF SECTION **/
+  tft.fillRect(80, 10, 60, 100, CYAN);
+  tft.fillRoundRect(80, 10, 60, 130, 30, CYAN);
+
+  /** VISOR ON SECTION **/
+  tft.fillRect(153, 210, 60, 100, GREEN);
+  tft.fillRoundRect(153, 180, 60, 130, 30, GREEN);
+
+  /** VISOR OFF SECTION **/
+  tft.fillRect(153, 10, 60, 100, RED);
+  tft.fillRoundRect(153, 10, 60, 130, 30, RED);
+
+  /** BARS AT BOTTOM **/
+  tft.fillRoundRect(220, 80, 40, 900, 20, YELLOW);
+  tft.fillRoundRect(220, 0, 40, 70, 20, BLUE);
+
+  /** LEFT SIDE BAR FILL **/
+  tft.fillRoundRect(0, 315, 320, 40, 10, YELLOW);
+
+  /** SET UP TEXT PROPERTIES **/
+  tft.setTextColor(BLACK);
+  tft.setTextSize(2);
+  tft.setRotation(1);
+
+  /** "FAN ON" TEXT **/
+  tft.setCursor(30, 30);
+  tft.println("FAN ON");
+
+  /** "FAN OFF" TEXT **/
+  tft.setCursor(200, 30);
+  tft.println("FAN OFF");
+
+  /** "LIGHT ON" TEXT **/
+  tft.setCursor(30, 100);
+  tft.println("LIGHT ON");
+
+  /** "LIGHT OFF" TEXT **/
+  tft.setCursor(200, 100);
+  tft.println("LIGHT OFF");
+
+  /** "VISOR UP" TEXT **/
+  tft.setCursor(30, 175);
+  tft.println("VISOR UP");
+
+  /** "VISOR DOWN" TEXT **/
+  tft.setCursor(185, 175);
+  tft.println("VISOR DOWN");
+}
+
 void setup() {
 
   Serial.begin(9600);
@@ -95,7 +161,11 @@ void setup() {
   /** DELAY UNTIL NEXT SCREEN **/
   delay(3000);
 
+  /** DEBUG - RESET SCREEN AND BUFFERS **/
+  // tft.reset();
 
+  /** ============ SCREEN 2 ============ **/
+  initSecondScreen();
 
   Servo1.attach(32);
   pinMode(26, OUTPUT);
